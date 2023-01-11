@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<project>
+  <buildWrappers>
+    <jenkins.plugins.jobcacher.CacheWrapper plugin="jobcacher@344.v382701e2ce20">
+      <maxCacheSize>0</maxCacheSize>
+      <caches>
+        <jenkins.plugins.jobcacher.ArbitraryFileCache>
+          <path>/root/go</path>
+          <includes>**/*</includes>
+          <excludes></excludes>
+          <useDefaultExcludes>true</useDefaultExcludes>
+          <cacheValidityDecidingFile></cacheValidityDecidingFile>
+          <compressionMethod>TARGZ</compressionMethod>
+          <cacheName></cacheName>
+        </jenkins.plugins.jobcacher.ArbitraryFileCache>
+      </caches>
+      <defaultBranch></defaultBranch>
+    </jenkins.plugins.jobcacher.CacheWrapper>
+  </buildWrappers>
+</project>

@@ -2858,6 +2858,67 @@ def maven_release(registry, xml_parent, data):
     helpers.convert_mapping_to_xml(mvn_release, data, mapping, fail_required=True)
 
 
+def job_cacher(registry, xml_parent, data):
+    """yaml: job-cacher
+    Wrapper for Maven projects
+
+    Requires the Jenkins :jenkins-plugins:`M2 Release Plugin <m2release>`
+
+    :arg str release-goals: Release goals and options (default '')
+    :arg str dry-run-goals: DryRun goals and options (default '')
+    :arg int num-successful-builds: Number of successful release builds to keep
+        (default 1)
+    :arg bool select-custom-scm-comment-prefix: Preselect 'Specify custom SCM
+        comment prefix' (default false)
+    :arg bool select-append-jenkins-username: Preselect 'Append Jenkins
+        Username' (default false)
+    :arg bool select-scm-credentials: Preselect 'Specify SCM login/password'
+        (default false)
+    :arg str release-env-var: Release environment variable (default '')
+    :arg str scm-user-env-var: SCM username environment variable (default '')
+    :arg str scm-password-env-var: SCM password environment variable
+        (default '')
+
+    Example:
+
+    .. literalinclude:: /../../tests/wrappers/fixtures/maven-release001.yaml
+       :language: yaml
+
+    """
+    job_cacher = XML.SubElement(
+        xml_parent, "jenkins.plugins.jobcacher." "CacheWrapper"
+    )
+
+    mapping = [
+        ("max-cache-size", "maxCacheSize", 0),
+        ("default-branch", "defaultBranch", ""),
+    ]
+
+    helpers.convert_mapping_to_xml(job_cacher, data, mapping, fail_required=True)
+    caches = data.get("caches", [])
+    if caches:
+        status_mapping = [
+            ("name", "cacheName", ""),
+            ("path", "path", ""),
+            ("includes", "includes", ""),
+            ("excludes", "excludes", ""),
+            ("use-default-excludes", "useDefaultExcludes", False),
+            ("compression-method", "compressionMethod", ""),
+            ("cache-validity-deciding-file", "cacheValidityDecidingFile", ""),
+        ]
+        result = XML.SubElement(
+            job_cacher,
+            "caches"
+        )
+        for cache in caches:
+            file_cache = XML.SubElement(
+                result, "jenkins.plugins.jobcacher." "ArbitraryFileCache"
+            )
+
+            helpers.convert_mapping_to_xml(
+                file_cache, cache, status_mapping, fail_required=True
+            )
+
 def version_number(parser, xml_parent, data):
     """yaml: version-number
     Generate a version number for the build using a format string. See the

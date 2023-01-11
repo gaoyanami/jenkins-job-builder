@@ -1,0 +1,12 @@
+wrappers:
+  - job-cacher:
+      max-cache-size: 0
+      default-branch: ""
+      caches:
+        - name: ""
+          path: /root/go
+          includes: "**/*"
+          excludes: ""
+          use-default-excludes: true
+          compression-method: TARGZ
+          cache-validity-deciding-file: ""
